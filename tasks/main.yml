@@ -1,0 +1,37 @@
+---
+# tasks file for ansible-role-user
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: "install-{{ ansible_os_family }}.yml"
+
+- name: Create log directory
+  file:
+    path: "{{ user_log_dir }}"
+    mode: 0755
+    owner: "{{ user_user }}"
+    group: "{{ user_group }}"
+    state: directory
+  notify: Restart user
+
+- name: Create db directory
+  file:
+    path: "{{ user_db_dir }}"
+    mode: 0755
+    owner: "{{ user_user }}"
+    group: "{{ user_group }}"
+    state: directory
+  notify: Restart user
+
+- name: Create user.conf
+  template:
+    src: user.conf.j2
+    dest: "{{ user_conf_file }}"
+    validate: echo %s
+  notify: Restart user
+
+- name: Start user
+  service:
+    name: "{{ user_service }}"
+    enabled: true
+    state: started
