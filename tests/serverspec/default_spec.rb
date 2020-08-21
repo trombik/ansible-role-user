@@ -19,7 +19,7 @@ users = [
   {
     name: "trombik",
     group: default_group,
-    groups: default_groups,
+    groups: default_groups
   }
 ]
 
