@@ -19,7 +19,7 @@ This is a list of dict. Keys of the dict are described below.
 | Key | Description | Mandatory? |
 |-----|-------------|------------|
 | `name` | Name of the user | Yes |
-| `arg`  | A dict of arguments supported by `ansible` [`user`](https://docs.ansible.com/ansible/latest/modules/user_module.html)` module | yes |
+| `arg`  | A dict of arguments supported by `ansible` [`user`](https://docs.ansible.com/ansible/latest/modules/user_module.html) module | yes |
 | `github` | if this key exists, add SSH public key found in GitHub to `authorized_keys`. | no |
 
 Note that `name` in `arg`, if omitted, defaults to `name` in the dict.
