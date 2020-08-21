@@ -51,3 +51,12 @@
   with_items: "{{ user_users }}"
   when:
     - "'github' in item"
+
+- name: Create .ssh
+  # XXX use include_tasks instead of block here because `block` cannot be used
+  # with `loop` or `with_items`.
+  include_tasks: create_ssh_dir.yml
+  with_items: "{{ user_users }}"
+  when:
+    - "not 'state' in item['arg'] or item['arg']['state'] == 'present'"
+    - "not 'create_home' in item['arg'] or not item['arg']['create_home']"

@@ -24,6 +24,8 @@ This is a list of dict. Keys of the dict are described below.
 
 Note that `name` in `arg`, if omitted, defaults to `name` in the dict.
 
+When a user has '$HOME' directory, the role creates '$HOME/.ssh'.
+
 # Dependencies
 
 None
@@ -31,6 +33,7 @@ None
 # Example Playbook
 
 ```yaml
+---
 - hosts: localhost
   roles:
     - ansible-role-user
@@ -54,6 +57,13 @@ None
         - dialout
         - video
     user_users:
+      - name: user_without_home
+        arg:
+          group: "{{ default_group[ansible_os_family] }}"
+          create_home: "no"
+      - name: user_without_ssh_key
+        arg:
+          group: "{{ default_group[ansible_os_family] }}"
       - name: trombik
         arg:
           comment: Tomoyuki Sakurai
