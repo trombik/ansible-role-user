@@ -1,9 +1,2 @@
 ---
-user_user: user
-user_group: user
-user_log_dir: /var/log/user
-user_db_dir: "{{ __user_db_dir }}"
-user_service: user
-user_conf_dir: "{{ __user_conf_dir }}"
-user_conf_file: "{{ __user_conf_dir }}/user.conf"
-user_flags: ""
+user_users: []

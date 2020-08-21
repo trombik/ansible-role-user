@@ -2,5 +2,37 @@
 - hosts: localhost
   roles:
     - ansible-role-user
+  # SSH keys from github
+  # PGP keys from github
+  # encripted files
   vars:
-    user_config: ""
+    default_group:
+      FreeBSD: wheel
+      OpenBSD: wheel
+      Debian: users
+      RedHat: users
+    default_groups:
+      FreeBSD:
+        - dialer
+        - video
+      OpenBSD:
+        - dialer
+        - games
+      Debian:
+        - dialout
+        - video
+      RedHat:
+        - dialout
+        - video
+    user_users:
+      - name: trombik
+        arg:
+          comment: Tomoyuki Sakurai
+          group: "{{ default_group[ansible_os_family] }}"
+          groups: "{{ default_groups[ansible_os_family] }}"
+          shell: /bin/sh
+        github:
+          user: trombik
+      - name: foo
+        arg:
+          state: absent
