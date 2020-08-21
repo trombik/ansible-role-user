@@ -8,9 +8,21 @@ None
 
 # Role Variables
 
-| variable | description | default |
+| Variable | Description | Default |
 |----------|-------------|---------|
+| `user_users` | List of users (see below) | `[]` |
 
+## `user_users`
+
+This is a list of dict. Keys of the dict are described below.
+
+| Key | Description | Mandatory? |
+|-----|-------------|------------|
+| `name` | Name of the user | Yes |
+| `arg`  | A dict of arguments supported by `ansible` `[user](https://docs.ansible.com/ansible/latest/modules/user_module.html)` module | yes |
+| `github` | if this key exists, add SSH public key found in GitHub to `authorized_keys`. | no |
+
+Note that `name` in `arg`, if omitted, defaults to `name` in the dict.
 
 # Dependencies
 
@@ -19,6 +31,40 @@ None
 # Example Playbook
 
 ```yaml
+- hosts: localhost
+  roles:
+    - ansible-role-user
+  vars:
+    default_group:
+      FreeBSD: wheel
+      OpenBSD: wheel
+      Debian: users
+      RedHat: users
+    default_groups:
+      FreeBSD:
+        - dialer
+        - video
+      OpenBSD:
+        - dialer
+        - games
+      Debian:
+        - dialout
+        - video
+      RedHat:
+        - dialout
+        - video
+    user_users:
+      - name: trombik
+        arg:
+          comment: Tomoyuki Sakurai
+          group: "{{ default_group[ansible_os_family] }}"
+          groups: "{{ default_groups[ansible_os_family] }}"
+          shell: /bin/sh
+        github:
+          user: trombik
+      - name: foo
+        arg:
+          state: absent
 ```
 
 # License

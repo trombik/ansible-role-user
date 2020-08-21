@@ -2,9 +2,6 @@
 - hosts: localhost
   roles:
     - ansible-role-user
-  # SSH keys from github
-  # PGP keys from github
-  # encripted files
   vars:
     default_group:
       FreeBSD: wheel
