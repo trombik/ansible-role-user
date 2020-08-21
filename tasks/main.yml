@@ -44,14 +44,6 @@
     update_password: "{{ item['arg']['update_password'] | default(omit) }}"
   with_items: "{{ user_users }}"
 
-- name: Add ssh key from GitHub to .ssh/authorized_keys
-  authorized_key:
-    user: "{{ item['arg']['name'] | default(item['name']) }}"
-    key: "https://github.com/{{ item['github']['user'] }}.keys"
-  with_items: "{{ user_users }}"
-  when:
-    - "'github' in item"
-
 - name: Create .ssh
   # XXX use include_tasks instead of block here because `block` cannot be used
   # with `loop` or `with_items`.
@@ -60,3 +52,11 @@
   when:
     - "not 'state' in item['arg'] or item['arg']['state'] == 'present'"
     - "not 'create_home' in item['arg'] or not item['arg']['create_home']"
+
+- name: Add ssh key from GitHub to .ssh/authorized_keys
+  authorized_key:
+    user: "{{ item['arg']['name'] | default(item['name']) }}"
+    key: "https://github.com/{{ item['github']['user'] }}.keys"
+  with_items: "{{ user_users }}"
+  when:
+    - "'github' in item"
