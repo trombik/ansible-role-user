@@ -35,6 +35,16 @@ users.each do |u|
     it { should be_file }
     its(:content) { should match(/^ssh-rsa/) }
   end
+
+  describe file "/home/#{u[:name]}/.ssh/rc" do
+    it { should exist }
+    it { should be_file }
+    it { should be_mode 600 }
+    it { should be_owned_by u[:name] }
+    it { should be_grouped_into u[:group] }
+    its(:content) { should match(/Managed by ansible/) }
+    its(:content) { should match(/see sshd\(8\)/) }
+  end
 end
 
 describe user "foo" do
@@ -45,6 +55,7 @@ describe file "/home/foo" do
   it { should_not exist }
 end
 
+# user_without_ssh_key
 describe user "user_without_ssh_key" do
   it { should exist }
   it { should belong_to_primary_group default_group }
@@ -63,6 +74,11 @@ describe file "/home/user_without_ssh_key/.ssh" do
   it { should be_grouped_into default_group }
 end
 
+describe file "/home/user_without_ssh_key/.ssh/rc" do
+  it { should_not exist }
+end
+
+# user_without_home
 describe user "user_without_home" do
   it { should exist }
   it { should belong_to_primary_group default_group }
@@ -73,5 +89,9 @@ describe file "/home/user_without_home" do
 end
 
 describe file "/home/user_without_home/.ssh" do
+  it { should_not exist }
+end
+
+describe file "/home/user_without_home/.ssh/rc" do
   it { should_not exist }
 end

@@ -21,6 +21,7 @@ This is a list of dict. Keys of the dict are described below.
 | `name` | Name of the user | Yes |
 | `arg`  | A dict of arguments supported by `ansible` [`user`](https://docs.ansible.com/ansible/latest/modules/user_module.html) module | yes |
 | `github` | if this key exists, add SSH public key found in GitHub to `authorized_keys`. | no |
+| `sshrc` | if this key exists, create `$HOME/.ssh/rc`. The value of this key is the file content | no |
 
 Note that `name` in `arg`, if omitted, defaults to `name` in the dict.
 
@@ -33,7 +34,6 @@ None
 # Example Playbook
 
 ```yaml
----
 - hosts: localhost
   roles:
     - ansible-role-user
@@ -72,6 +72,17 @@ None
           shell: /bin/sh
         github:
           user: trombik
+        sshrc: |
+          # see sshd(8)
+          if read proto cookie && [ -n "$DISPLAY" ]; then
+            if [ `echo $DISPLAY | cut -c1-10` = 'localhost:' ]; then
+              # X11UseLocalhost=yes
+              echo add unix:`echo $DISPLAY | cut -c11-` $proto $cookie
+            else
+              # X11UseLocalhost=no
+              echo add $DISPLAY $proto $cookie
+            fi | xauth -q -
+          fi
       - name: foo
         arg:
           state: absent
