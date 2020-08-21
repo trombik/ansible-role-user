@@ -1,6 +1,6 @@
-# ansible-role-user
+# `trombik.user`
 
-A brief description of the role goes here.
+Manage local users.
 
 # Requirements
 

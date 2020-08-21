@@ -2,7 +2,7 @@
 galaxy_info:
   role_name: user
   author: Tomoyuki Sakurai
-  description: Create users
+  description: Manage users
   company: N/A
   license: BSD
   min_ansible_version: 2.0
